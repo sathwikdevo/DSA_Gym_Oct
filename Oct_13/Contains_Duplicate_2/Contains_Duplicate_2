@@ -1,0 +1,19 @@
+class Solution(object):
+    def containsNearbyDuplicate(self, nums, k):
+        """
+        :type nums: List[int]
+        :type k: int
+        :rtype: bool
+        """
+        # Map to store the last seen index of each number
+        seen = {}
+        
+        for i in range(len(nums)):
+            num = nums[i]
+            # If the number exists in our map and the index difference is <= k
+            if num in seen and i - seen[num] <= k:
+                return True
+            # Update the latest index of the number
+            seen[num] = i
+            
+        return False

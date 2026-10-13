@@ -1,0 +1,32 @@
+class Solution(object):
+    def findAnagrams(self, s, p):
+        """:type s: str :type p: str :rtype: List[int]"""
+        res = []
+        n, m = len(s), len(p)
+        
+        if m > n:
+            return res
+        
+        # Frequency arrays for characters 'a' through 'z'
+        p_count = [0] * 26
+        s_count = [0] * 26
+        
+        # Initialize frequency for p and the first window in s
+        for i in range(m):
+            p_count[ord(p[i]) - ord('a')] += 1
+            s_count[ord(s[i]) - ord('a')] += 1
+            
+        if p_count == s_count:
+            res.append(0)
+            
+        # Sliding window
+        for i in range(m, n):
+            # Add new character to the right of the window
+            s_count[ord(s[i]) - ord('a')] += 1
+            # Remove old character from the left of the window
+            s_count[ord(s[i - m]) - ord('a')] -= 1
+            
+            if p_count == s_count:
+                res.append(i - m + 1)
+                
+        return res
