@@ -1,0 +1,21 @@
+class Solution(object):
+    def sortArrayByParity(self, nums):
+        """:type nums: List[int]""" \
+           """:rtype: List[int]"""
+        n = len(nums)
+        
+        # Bubble sort approach with custom parity condition
+        for i in range(n):
+            swapped = False
+            for j in range(0, n - i - 1):
+                # If the current element is odd and the next element is even, swap them
+                # (We want even numbers first, so an odd followed by an even is out of order)
+                if nums[j] % 2 != 0 and nums[j + 1] % 2 == 0:
+                    nums[j], nums[j + 1] = nums[j + 1], nums[j]
+                    swapped = True
+                    
+            # If no two elements were swapped in the inner loop, the array is already sorted
+            if not swapped:
+                break
+                
+        return nums
