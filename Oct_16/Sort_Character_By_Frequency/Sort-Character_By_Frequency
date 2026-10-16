@@ -1,0 +1,24 @@
+class Solution(object):
+    def frequencySort(self, s):
+        """
+        :type s: str
+        :rtype: str
+        """
+        # Step 1: Count character frequencies manually using a dictionary
+        freq = {}
+        for char in s:
+            freq[char] = freq.get(char, 0) + 1
+            
+        # Step 2: Group characters by their frequency using bucket sort
+        # Maximum possible frequency is the length of the string s
+        buckets = [[] for _ in range(len(s) + 1)]
+        for char, count in freq.items():
+            buckets[count].append(char)
+            
+        # Step 3: Build the result string from highest frequency to lowest
+        result = []
+        for i in range(len(buckets) - 1, 0, -1):
+            for char in buckets[i]:
+                result.append(char * i)
+                
+        return "".join(result)
