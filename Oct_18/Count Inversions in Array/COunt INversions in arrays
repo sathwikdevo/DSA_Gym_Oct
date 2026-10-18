@@ -1,0 +1,55 @@
+class Solution(object):
+    def numberOfPermutations(self, n, requirements):
+        """
+        :type n: int
+        :type requirements: List[List[int]]
+        :rtype: int
+        """
+        MOD = 10**9 + 7
+        
+        # Map requirement end indices to their specific required inversion counts
+        req_map = {}
+        max_cnt = 0
+        for end, cnt in requirements:
+            req_map[end] = cnt
+            if cnt > max_cnt:
+                max_cnt = cnt
+                
+        # If length 0 requirement has a non-zero inversion count, it's impossible
+        if 0 in req_map and req_map[0] != 0:
+            return 0
+            
+        # dp[j] represents the number of valid permutations of the current prefix length with j inversions
+        # Maximum possible inversions for length n is n * (n - 1) / 2, but we only need up to max_cnt
+        dp = [0] * (max_cnt + 1)
+        dp[0] = 1  # Base case: 1 way to form a prefix of length 1 with 0 inversions
+        
+        for i in range(1, n):
+            next_dp = [0] * (max_cnt + 1)
+            
+            # When inserting the i-th element (0-indexed length i+1), 
+            # we can place it anywhere from the very end to the very beginning,
+            # contributing anywhere from 0 to i inversions.
+            for j in range(max_cnt + 1):
+                if dp[j] == 0:
+                    continue
+                for k in range(i + 1):
+                    if j + k <= max_cnt:
+                        next_dp[j + k] = (next_dp[j + k] + dp[j]) % MOD
+            
+            dp = next_dp
+            
+            # If there is a requirement for the prefix of length (i + 1), 
+            # we must filter out any inversion counts that don't match the requirement.
+            if i in req_map:
+                target_cnt = req_map[i]
+                for j in range(max_cnt + 1):
+                    if j != target_cnt:
+                        dp[j] = 0
+                        
+        # The answer for the full array of length n with the final requirement
+        final_end = n - 1
+        if final_end in req_map:
+            return dp[req_map[final_end]]
+            
+        return sum(dp) % MOD
