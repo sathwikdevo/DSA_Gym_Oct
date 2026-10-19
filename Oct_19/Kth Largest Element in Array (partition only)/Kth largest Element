@@ -1,0 +1,35 @@
+class Solution(object):
+    def findKthLargest(self, nums, k):
+        """:type nums: List[int]
+
+        :type k: int
+        :rtype: int
+        """
+        # Convert "k-th largest" into the equivalent 0-indexed position 
+        # from a sorted perspective (descending order), or find the 
+        # (n - k)-th smallest element using standard quickselect partition.
+        target_index = len(nums) - k
+
+        def quickselect(left, right):
+            pivot = nums[right]
+            p = left
+            
+            # Partition step: elements smaller than pivot go to the left, 
+            # larger elements go to the right.
+            for i in range(left, right):
+                if nums[i] <= pivot:
+                    nums[p], nums[i] = nums[i], nums[p]
+                    p += 1
+            
+            # Place the pivot in its final sorted position
+            nums[p], nums[right] = nums[right], nums[p]
+            
+            # Check if the pivot is at our target position
+            if p > target_index:
+                return quickselect(left, p - 1)
+            elif p < target_index:
+                return quickselect(p + 1, right)
+            else:
+                return nums[p]
+
+        return quickselect(0, len(nums) - 1)
