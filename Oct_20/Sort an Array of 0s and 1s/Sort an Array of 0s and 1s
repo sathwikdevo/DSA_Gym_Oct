@@ -1,0 +1,19 @@
+n = int(input("Enter number of elements: "))
+arr = list(map(int, input("Enter 0s and 1s: ").split()))
+
+count = [0, 0]
+
+for num in arr:
+    count[num] += 1
+
+index = 0
+
+for i in range(count[0]):
+    arr[index] = 0
+    index += 1
+
+for i in range(count[1]):
+    arr[index] = 1
+    index += 1
+
+print("Sorted array:", arr)
