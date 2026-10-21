@@ -1,0 +1,29 @@
+
+class Solution:
+    def frequencySort(self, nums):
+        freq = {}
+
+        # Step 1: Count frequency of each number
+        for num in nums:
+            if num in freq:
+                freq[num] += 1
+            else:
+                freq[num] = 1
+
+        # Step 2: Custom insertion sort
+        n = len(nums)
+
+        for i in range(1, n):
+            key = nums[i]
+            j = i - 1
+
+            while j >= 0 and (
+                freq[nums[j]] > freq[key] or
+                (freq[nums[j]] == freq[key] and nums[j] < key)
+            ):
+                nums[j + 1] = nums[j]
+                j -= 1
+
+            nums[j + 1] = key
+
+        return nums
