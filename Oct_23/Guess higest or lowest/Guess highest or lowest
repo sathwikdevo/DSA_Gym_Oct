@@ -1,0 +1,25 @@
+class Solution(object):
+    def guessNumber(self, n):
+        """
+        :type n: int
+        :rtype: int
+        """
+        left = 1
+        right = n
+        
+        while left <= right:
+            # Avoid potential integer overflow (though Python handles large ints automatically)
+            mid = left + (right - left) // 2
+            
+            res = guess(mid)
+            
+            if res == 0:
+                return mid
+            elif res == -1:
+                # Our guess is higher than the picked number, search the left half
+                right = mid - 1
+            else:
+                # Our guess is lower than the picked number, search the right half
+                left = mid + 1
+                
+        return -1
