@@ -1,0 +1,40 @@
+def findFloor(nums, target):
+    left = 0
+    right = len(nums) - 1
+    floor = -1
+
+    while left <= right:
+        mid = (left + right) // 2
+
+        if nums[mid] <= target:
+            floor = nums[mid]
+            left = mid + 1
+        else:
+            right = mid - 1
+
+    return floor
+
+
+def findCeiling(nums, target):
+    left = 0
+    right = len(nums) - 1
+    ceiling = -1
+
+    while left <= right:
+        mid = (left + right) // 2
+
+        if nums[mid] >= target:
+            ceiling = nums[mid]
+            right = mid - 1
+        else:
+            left = mid + 1
+
+    return ceiling
+
+
+# User input
+nums = list(map(int, input("Enter sorted array elements: ").split()))
+target = int(input("Enter target: "))
+
+print("Floor:", findFloor(nums, target))
+print("Ceiling:", findCeiling(nums, target))

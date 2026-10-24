@@ -1,0 +1,36 @@
+class Solution(object):
+    def searchRange(self, nums, target):
+        """
+        :type nums: List[int]
+        :type target: int
+        :rtype: List[int]
+        """
+        def findFirst(nums, target):
+            left, right = 0, len(nums) - 1
+            first_idx = -1
+            while left <= right:
+                mid = (left + right) // 2
+                if nums[mid] == target:
+                    first_idx = mid
+                    right = mid - 1  # Look for earlier occurrence on the left
+                elif nums[mid] < target:
+                    left = mid + 1
+                else:
+                    right = mid - 1
+            return first_idx
+
+        def findLast(nums, target):
+            left, right = 0, len(nums) - 1
+            last_idx = -1
+            while left <= right:
+                mid = (left + right) // 2
+                if nums[mid] == target:
+                    last_idx = mid
+                    left = mid + 1  # Look for later occurrence on the right
+                elif nums[mid] < target:
+                    left = mid + 1
+                else:
+                    right = mid - 1
+            return last_idx
+
+        return [findFirst(nums, target), findLast(nums, target)]
