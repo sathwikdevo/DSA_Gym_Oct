@@ -1,0 +1,38 @@
+def findRotationCount(arr):
+    n = len(arr)
+
+    if n == 0:
+        return 0
+
+    left = 0
+    right = n - 1
+
+    while left <= right:
+
+        # If the current range is already sorted
+        if arr[left] <= arr[right]:
+            return left
+
+        mid = (left + right) // 2
+
+        # Check if mid is the minimum element
+        if mid > 0 and arr[mid] < arr[mid - 1]:
+            return mid
+
+        # Check if the next element is smaller
+        if mid < n - 1 and arr[mid] > arr[mid + 1]:
+            return mid + 1
+
+        # Decide which half to search
+        if arr[mid] >= arr[left]:
+            left = mid + 1
+        else:
+            right = mid - 1
+
+    return 0
+
+
+# User input
+arr = list(map(int, input("Enter rotated sorted array elements: ").split()))
+
+print("Rotation Count:", findRotationCount(arr))
