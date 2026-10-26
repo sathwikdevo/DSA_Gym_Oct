@@ -1,0 +1,21 @@
+class Solution(object):
+    def findPeakElement(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        left = 0
+        right = len(nums) - 1
+        
+        while left < right:
+            mid = left + (right - left) // 2
+            
+            # If the element at mid is smaller than its next element, 
+            # it means a peak must exist on the right side.
+            if nums[mid] < nums[mid + 1]:
+                left = mid + 1
+            # Otherwise, a peak must exist on the left side (including mid).
+            else:
+                right = mid
+                
+        return left
