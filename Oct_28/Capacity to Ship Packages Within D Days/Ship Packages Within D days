@@ -1,0 +1,37 @@
+class Solution(object):
+    def shipWithinDays(self, weights, days):
+        """:type weights: List[int]
+
+        :type days: int
+        :rtype: int
+        """
+        # Feasibility check: Can we ship all packages within 'days' with capacity 'C'?
+        def can_ship(capacity):
+            current_days = 1
+            current_load = 0
+            
+            for w in weights:
+                if current_load + w > capacity:
+                    current_days += 1
+                    current_load = w
+                else:
+                    current_load += w
+                    
+            return current_days <= days
+
+        # Search space bounds
+        low = max(weights)
+        high = sum(weights)
+        ans = high
+
+        # Binary search without using bisect
+        while low <= high:
+            mid = (low + high) // 2
+            
+            if can_ship(mid):
+                ans = mid       # Record valid capacity
+                high = mid - 1  # Try to find a smaller valid capacity
+            else:
+                low = mid + 1   # Capacity too small, increase it
+                
+        return ans

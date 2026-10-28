@@ -1,0 +1,44 @@
+class Solution:
+    def findPages(self, arr, k):
+        n = len(arr)
+
+        # Every student must receive at least one book
+        if k > n:
+            return -1
+
+        # Minimum possible maximum pages
+        left = max(arr)
+
+        # Maximum possible pages for one student
+        right = sum(arr)
+
+        while left < right:
+            mid = (left + right) // 2
+
+            students = 1
+            current_pages = 0
+
+            # Check whether capacity mid is feasible
+            for pages in arr:
+                if current_pages + pages > mid:
+                    students += 1
+                    current_pages = pages
+                else:
+                    current_pages += pages
+
+            # If we can allocate using at most k students,
+            # try a smaller maximum page limit
+            if students <= k:
+                right = mid
+            else:
+                left = mid + 1
+
+        return left
+
+
+# User input
+arr = list(map(int, input("Enter pages in each book: ").split()))
+k = int(input("Enter number of students: "))
+
+solution = Solution()
+print("Minimum maximum pages:", solution.findPages(arr, k))
