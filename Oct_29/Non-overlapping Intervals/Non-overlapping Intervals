@@ -1,0 +1,57 @@
+class Solution(object):
+    def eraseOverlapIntervals(self, intervals):
+        """
+        :type intervals: List[List[int]]
+        :rtype: int
+        """
+        if not intervals:
+            return 0
+
+        # Step 1: Sort intervals by their end time using custom Merge Sort
+        sorted_intervals = self.mergeSort(intervals)
+
+        # Step 2: Greedy approach to find the maximum number of non-overlapping intervals
+        non_overlapping_count = 1
+        # The end time of the first interval in the sorted list
+        prev_end = sorted_intervals[0][1]
+
+        for i in range(1, len(sorted_intervals)):
+            current_start = sorted_intervals[i][0]
+            current_end = sorted_intervals[i][1]
+
+            # If the current interval starts at or after the previous one ends, it's non-overlapping
+            if current_start >= prev_end:
+                non_overlapping_count += 1
+                prev_end = current_end
+
+        # Minimum removals = Total intervals - Maximum non-overlapping intervals
+        return len(intervals) - non_overlapping_count
+
+    def mergeSort(self, arr):
+        """Custom Merge Sort implementation based on interval end time."""
+        if len(arr) <= 1:
+            return arr
+
+        mid = len(arr) // 2
+        left = self.mergeSort(arr[:mid])
+        right = self.mergeSort(arr[mid:])
+
+        return self.merge(left, right)
+
+    def merge(self, left, right):
+        """Helper to merge two sorted halves based on the interval's end time (index 1)."""
+        result = []
+        i = j = 0
+
+        while i < len(left) and j < len(right):
+            # Compare end times (element at index 1)
+            if left[i][1] <= right[j][1]:
+                result.append(left[i])
+                i += 1
+            else:
+                result.append(right[j])
+                j += 1
+
+        result.extend(left[i:])
+        result.extend(right[j:])
+        return result
