@@ -1,0 +1,30 @@
+class Solution(object):
+    def twoSum(self, numbers, target):
+        """:type numbers: List[int]
+
+        :type target: int
+        :rtype: List[int]
+        """
+        n = len(numbers)
+
+        # Iterate through each element and use custom binary search to find the complement
+        for i in range(n):
+            complement = target - numbers[i]
+
+            # Define search bounds for the remaining portion of the array (strictly after index i)
+            left = i + 1
+            right = n - 1
+
+            # Custom Binary Search loop
+            while left <= right:
+                mid = left + (right - left) // 2
+
+                if numbers[mid] == complement:
+                    # Return 1-indexed positions as required by the problem
+                    return [i + 1, mid + 1]
+                elif numbers[mid] < complement:
+                    left = mid + 1
+                else:
+                    right = mid - 1
+
+        return []
